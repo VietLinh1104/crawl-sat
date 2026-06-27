@@ -1,0 +1,75 @@
+Metadata-Version: 2.4
+Name: classmarker-crawler
+Version: 0.1.0
+Summary: Crawl authorized ClassMarker data and export it to JSON/CSV.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: playwright<2,>=1.44
+Requires-Dist: python-dotenv<2,>=1.0
+Provides-Extra: dev
+Requires-Dist: pytest<9,>=8; extra == "dev"
+Requires-Dist: ruff<1,>=0.5; extra == "dev"
+
+# ClassMarker Crawler
+
+Project Python đăng nhập ClassMarker bằng trình duyệt thật, đọc các bảng dữ liệu mà tài
+khoản có quyền truy cập và xuất ra JSON/CSV.
+
+Nếu tài khoản của bạn có API key, nên ưu tiên API chính thức của ClassMarker cho tác vụ
+đồng bộ production; crawler trình duyệt này phù hợp khi cần lấy đúng dữ liệu đang hiển thị
+trên trang quản trị hoặc chưa được cấp API key.
+
+> Chỉ sử dụng với tài khoản và dữ liệu bạn được phép truy cập. Không dùng công cụ này để
+> vượt CAPTCHA, 2FA, phân quyền, hoặc giới hạn truy cập của ClassMarker.
+
+## Cài đặt
+
+Yêu cầu Python 3.11+.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+playwright install chromium
+cp .env.example .env
+```
+
+Điền tài khoản và `CLASSMARKER_TARGET_URL` trong `.env`. Không commit file `.env`.
+
+## Chạy
+
+```bash
+classmarker-crawl
+```
+
+Một số lựa chọn hữu ích:
+
+```bash
+# Mở trình duyệt để tự đăng nhập/hoàn tất 2FA, rồi crawl
+classmarker-crawl --manual-login --headed
+
+# Crawl URL khác và giới hạn 5 trang
+classmarker-crawl --url "https://www.classmarker.com/a/tests/results/" --max-pages 5
+
+# Chỉ lưu JSON
+classmarker-crawl --format json --output output/results
+
+# Mở tất cả link Results và crawl câu hỏi, lựa chọn, đáp án đúng/đã chọn
+classmarker-crawl-details
+
+# Tải ảnh nội dung về output/images và cập nhật đường dẫn local trong JSON
+classmarker-download-images
+```
+
+Kết quả mặc định nằm tại `output/classmarker_data.json` và
+`output/classmarker_data.csv`. Hai file chỉ chứa các hàng đã có nút `Results`; trường
+`result_link` là URL tuyệt đối dẫn đến trang kết quả. Session đăng nhập được lưu cục bộ ở
+`playwright/.auth/state.json` để lần chạy sau không cần đăng nhập lại.
+
+Chi tiết câu hỏi được lưu tại `output/classmarker_questions.json`. Lệnh crawl chi tiết có
+checkpoint sau mỗi bài; nếu bị gián đoạn, chạy lại lệnh để tiếp tục các link còn thiếu.
+Ảnh nội dung được tải về `output/images/`; JSON giữ URL gốc trong `source_images` và dùng
+đường dẫn local trong `images` cũng như các thuộc tính `src` của HTML.
+
+Nếu ClassMarker đổi giao diện, cập nhật các selector trong `.env`. Nếu trang không có
+bảng HTML, chạy `--headed` để xác nhận URL và quyền truy cập.

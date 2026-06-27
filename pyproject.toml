@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "classmarker-crawler"
+version = "0.1.0"
+description = "Crawl authorized ClassMarker data and export it to JSON/CSV."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "playwright>=1.44,<2",
+  "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9", "ruff>=0.5,<1"]
+
+[project.scripts]
+classmarker-crawl = "classmarker_crawler.cli:main"
+classmarker-crawl-details = "classmarker_crawler.details_cli:main"
+classmarker-download-images = "classmarker_crawler.images:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

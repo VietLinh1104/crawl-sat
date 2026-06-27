@@ -1,0 +1,4 @@
+[console_scripts]
+classmarker-crawl = classmarker_crawler.cli:main
+classmarker-crawl-details = classmarker_crawler.details_cli:main
+classmarker-download-images = classmarker_crawler.images:main
