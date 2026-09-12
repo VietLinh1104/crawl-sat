@@ -20,7 +20,7 @@ class Settings:
     auth_state: Path = Path("playwright/.auth/state.json")
 
     @classmethod
-    def from_env(cls, target_url: str | None = None) -> "Settings":
+    def from_env(cls, target_url: str | None = None) -> Settings:
         load_dotenv()
         url = target_url or os.getenv("CLASSMARKER_TARGET_URL", "")
         if not url.startswith(("https://www.classmarker.com/", "https://classmarker.com/")):

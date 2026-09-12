@@ -6,8 +6,8 @@ from typing import Any
 
 from playwright.async_api import Page, async_playwright
 
-from .crawler import ClassMarkerCrawler
 from .config import Settings
+from .crawler import ClassMarkerCrawler
 
 
 class ResultDetailsCrawler:
@@ -54,7 +54,7 @@ class ResultDetailsCrawler:
                         continue
                     try:
                         detail = await self._crawl_one(page, url, row)
-                    except Exception as exc:  # Keep the checkpoint usable if one page fails.
+                    except Exception as exc:  # noqa: BLE001 - Keep checkpoint usable
                         detail = {
                             "result_url": url,
                             "source_row": row,
@@ -204,5 +204,5 @@ class ResultDetailsCrawler:
 def load_result_rows(path: Path) -> list[dict[str, Any]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, list):
-        raise ValueError(f"Expected a JSON list in {path}")
+        raise TypeError(f"Expected a JSON list in {path}")
     return [row for row in payload if isinstance(row, dict) and row.get("result_link")]

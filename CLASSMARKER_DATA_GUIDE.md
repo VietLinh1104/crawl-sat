@@ -30,6 +30,9 @@ classmarker-crawl-details
 
 # Bước 3: tải các ảnh mới và cập nhật đường dẫn ảnh trong JSON
 classmarker-download-images
+
+# Bước 4 (tùy chọn): xuất bài thi và kết quả ra file PDF A4
+classmarker-export-pdf
 ```
 
 Kết quả:
@@ -39,9 +42,11 @@ output/
 ├── classmarker_data.json
 ├── classmarker_data.csv
 ├── classmarker_questions.json
-└── images/
-    ├── 10384784_xxxxxxxx.jpg
-    ├── 10384784_xxxxxxxx.png
+├── images/
+│   ├── 10384784_xxxxxxxx.jpg
+│   └── ...
+└── pdfs/
+    ├── Math Practice 1 - Student Name.pdf
     └── ...
 ```
 
@@ -78,6 +83,19 @@ classmarker-crawl-details --delay 1
 
 # Điều chỉnh số luồng tải ảnh
 classmarker-download-images --workers 8
+
+# Xuất thử 1 bài PDF đầu tiên
+classmarker-export-pdf --limit 1
+
+# Xuất bài theo index hoặc tên bài thi
+classmarker-export-pdf --test 0
+classmarker-export-pdf --test "Bluebook Mini Verbal Test 1"
+
+# Xuất đề thi trắng (không kèm đáp án và điểm) để in làm bài
+classmarker-export-pdf --no-answers --output-dir output/pdfs/blank
+
+# Xuất toàn bộ với số worker song song cao hơn
+classmarker-export-pdf --workers 6
 ```
 
 ## 5. Cấu trúc `classmarker_data.json`

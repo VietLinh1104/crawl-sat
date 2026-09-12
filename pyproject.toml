@@ -20,6 +20,7 @@ dev = ["pytest>=8,<9", "ruff>=0.5,<1"]
 classmarker-crawl = "classmarker_crawler.cli:main"
 classmarker-crawl-details = "classmarker_crawler.details_cli:main"
 classmarker-download-images = "classmarker_crawler.images:main"
+classmarker-export-pdf = "classmarker_crawler.pdf_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

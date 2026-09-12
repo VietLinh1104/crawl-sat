@@ -54,7 +54,7 @@ def download_one(url: str, destination: Path, retries: int = 3) -> None:
             temporary.write_bytes(content)
             temporary.replace(destination)
             return
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             last_error = exc
             temporary.unlink(missing_ok=True)
             if attempt + 1 < retries:
@@ -101,7 +101,7 @@ def main() -> None:
             url = futures[future]
             try:
                 future.result()
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 failures[url] = str(exc)
             if index % 50 == 0 or index == len(urls):
                 print(f"[{index}/{len(urls)}] downloaded, {len(failures)} failure(s)", flush=True)
