@@ -59,6 +59,12 @@ classmarker-crawl-details
 
 # Tải ảnh nội dung về output/images và cập nhật đường dẫn local trong JSON
 classmarker-download-images
+
+# Xuất câu hỏi và kết quả ra file PDF (A4)
+classmarker-export-pdf
+
+# Xuất đề thi trắng không kèm đáp án (dùng để in làm bài)
+classmarker-export-pdf --no-answers --output-dir output/pdfs/blank
 ```
 
 Kết quả mặc định nằm tại `output/classmarker_data.json` và
@@ -70,6 +76,7 @@ Chi tiết câu hỏi được lưu tại `output/classmarker_questions.json`. L
 checkpoint sau mỗi bài; nếu bị gián đoạn, chạy lại lệnh để tiếp tục các link còn thiếu.
 Ảnh nội dung được tải về `output/images/`; JSON giữ URL gốc trong `source_images` và dùng
 đường dẫn local trong `images` cũng như các thuộc tính `src` của HTML.
+Các file PDF xuất ra được lưu tại `output/pdfs/`.
 
 Nếu ClassMarker đổi giao diện, cập nhật các selector trong `.env`. Nếu trang không có
 bảng HTML, chạy `--headed` để xác nhận URL và quyền truy cập.

@@ -125,12 +125,23 @@ class ClassMarkerCrawler:
                 names = headers or [f"column_{i + 1}" for i in range(len(cells))]
                 names = self._unique_headers(names, len(cells))
                 record = dict(zip(names, cells, strict=False))
-                if record.get("column_5") == "Results":
-                    result_link = row.locator('a.btn-results, a:has-text("Results")').first
-                    if await result_link.count() > 0:
-                        href = await result_link.get_attribute("href")
-                        if href:
-                            record["result_link"] = urljoin(page.url, href)
+
+                title_elem = row.locator(".name-wrapper .text, .name-wrapper span.text").first
+                if await title_elem.count() > 0:
+                    clean_title = self._clean(await title_elem.text_content() or "")
+                    if clean_title:
+                        record["test_title"] = clean_title
+
+                action_link = row.locator(
+                    'a.btn-results, a.btn-start, a:has-text("Results"), a:has-text("Start"), a:has-text("Resume")'
+                ).first
+                if await action_link.count() > 0:
+                    href = await action_link.get_attribute("href")
+                    if href:
+                        record["result_link"] = urljoin(page.url, href)
+                    btn_text = self._clean(await action_link.text_content() or "")
+                    if btn_text and not record.get("column_5"):
+                        record["column_5"] = btn_text
                 data.append(record)
             output.append({"index": index, "headers": headers, "rows": data})
         return output

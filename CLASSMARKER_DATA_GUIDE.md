@@ -19,13 +19,13 @@ tại `playwright/.auth/state.json`.
 
 ## 2. Quy trình cập nhật thông thường
 
-Sau khi tài khoản ClassMarker có thêm bài đã làm và xuất hiện nút `Results`, chạy lần lượt:
+Sau khi tài khoản ClassMarker có thêm bài mới (cả bài đã nộp có nút `Results`, lẫn bài chưa làm `Start` hoặc đang làm dở `Resume`), chạy lần lượt:
 
 ```bash
-# Bước 1: cập nhật danh sách tất cả bài có Results
+# Bước 1: cập nhật danh sách tất cả bài có Results, Start hoặc Resume
 classmarker-crawl --format both --output output/classmarker_data
 
-# Bước 2: crawl câu hỏi và đáp án của các result_url mới
+# Bước 2: crawl câu hỏi và đáp án của các URL mới (hỗ trợ cả Results và giao diện làm bài live)
 classmarker-crawl-details
 
 # Bước 3: tải các ảnh mới và cập nhật đường dẫn ảnh trong JSON

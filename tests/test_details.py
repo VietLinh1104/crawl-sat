@@ -19,3 +19,24 @@ def test_checkpoint_round_trip(tmp_path):
     records = [{"result_url": "https://example.test/1", "questions": []}]
     ResultDetailsCrawler._write_checkpoint(path, records)
     assert ResultDetailsCrawler._load_checkpoint(path) == records
+
+
+def test_retry_errors_filters_and_replaces(tmp_path):
+    checkpoint_path = tmp_path / "questions.json"
+    initial_records = [
+        {"result_url": "https://example.test/success", "questions": [{"text": "Q1"}]},
+        {"result_url": "https://example.test/failed", "error": "Timeout", "questions": []},
+        {"result_url": "https://example.test/empty", "questions": []},
+    ]
+    ResultDetailsCrawler._write_checkpoint(checkpoint_path, initial_records)
+
+    loaded = ResultDetailsCrawler._load_checkpoint(checkpoint_path)
+    failed_urls = {
+        item.get("result_url")
+        for item in loaded
+        if "error" in item or len(item.get("questions", [])) == 0
+    }
+    assert failed_urls == {
+        "https://example.test/failed",
+        "https://example.test/empty",
+    }

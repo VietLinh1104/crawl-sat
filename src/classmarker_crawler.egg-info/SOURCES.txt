@@ -19,3 +19,4 @@ src/classmarker_crawler.egg-info/top_level.txt
 tests/test_details.py
 tests/test_exporters.py
 tests/test_images.py
+tests/test_pdf.py

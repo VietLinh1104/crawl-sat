@@ -12,7 +12,7 @@ def result_records(result: CrawlResult) -> list[dict[str, str | int]]:
     for page_data in result.pages:
         for table in page_data["tables"]:
             for row in table["rows"]:
-                if row.get("column_5") == "Results":
+                if row.get("result_link") or row.get("column_5") == "Results":
                     records.append(row)
     return records
 

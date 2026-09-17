@@ -55,13 +55,16 @@ classmarker-export-pdf
 classmarker-export-pdf --no-answers --output-dir output/pdfs/blank
 ```
 
-Kết quả mặc định nằm tại `output/classmarker_data.json` và
-`output/classmarker_data.csv`. Hai file chỉ chứa các hàng đã có nút `Results`; trường
-`result_link` là URL tuyệt đối dẫn đến trang kết quả. Session đăng nhập được lưu cục bộ ở
-`playwright/.auth/state.json` để lần chạy sau không cần đăng nhập lại.
+Kết quả danh sách mặc định nằm tại `output/classmarker_data.json` và
+`output/classmarker_data.csv`. File chứa tất cả các hàng có nút `Results`, `Start` hoặc
+`Resume`; trường `result_link` là URL tuyệt đối dẫn đến trang kết quả hoặc trang làm bài.
+Session đăng nhập được lưu cục bộ ở `playwright/.auth/state.json` để lần chạy sau không cần
+đăng nhập lại.
 
-Chi tiết câu hỏi được lưu tại `output/classmarker_questions.json`. Lệnh crawl chi tiết có
-checkpoint sau mỗi bài; nếu bị gián đoạn, chạy lại lệnh để tiếp tục các link còn thiếu.
+Chi tiết câu hỏi được lưu tại `output/classmarker_questions.json`. Lệnh crawl chi tiết hỗ trợ
+cả các bài đã hoàn thành và bài chưa làm (tự động duyệt từng câu bằng nút Next và lưu an toàn
+bằng nút Save and finish later, không nộp bài). Lệnh có checkpoint sau mỗi bài; nếu bị gián đoạn,
+chạy lại lệnh để tiếp tục các bài còn thiếu.
 Ảnh nội dung được tải về `output/images/`; JSON giữ URL gốc trong `source_images` và dùng
 đường dẫn local trong `images` cũng như các thuộc tính `src` của HTML.
 Các file PDF xuất ra được lưu tại `output/pdfs/`.
